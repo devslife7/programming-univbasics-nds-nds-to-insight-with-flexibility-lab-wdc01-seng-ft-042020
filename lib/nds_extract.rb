@@ -32,6 +32,7 @@ end
 
 
 # Your code after this point
+require 'pp'
 
 def movies_with_director_key(name, movies_collection)
   # GOAL: For each Hash in an Array (movies_collection), provide a collection
@@ -48,6 +49,18 @@ def movies_with_director_key(name, movies_collection)
   # Array of Hashes where each Hash represents a movie; however, they should all have a
   # :director_name key. This addition can be done by using the provided
   # movie_with_director_name method
+
+  aoh = []
+
+  index = 0
+  while index < movies_collection.length do
+    aoh << movies_collection[index]
+    aoh[index][:director_name] = name
+    
+    index += 1
+  end
+
+  aoh 
 end
 
 
@@ -63,6 +76,26 @@ def gross_per_studio(collection)
   #
   # Hash whose keys are the studio names and whose values are the sum
   # total of all the worldwide_gross numbers for every movie in the input Hash
+  pp collection
+  print "----------method called ------------------------------------------"
+  result_hash = {}
+
+  movies_index = 0
+  while movies_index < collection.length do
+    movie = collection[movies_index]
+    if (result_hash.key?(movie[:studio]))
+      print "already exists\n"
+      result_hash[movie[:studio]] += movie[:worldwide_gross]
+    else 
+      print "does't exist yet\n"
+      result_hash[movie[:studio]] = movie[:worldwide_gross]
+    end
+    
+    movies_index += 1
+  end
+  pp result_hash
+
+  result_hash
 end
 
 def movies_with_directors_set(source)
@@ -76,6 +109,23 @@ def movies_with_directors_set(source)
   #
   # Array of Arrays containing all of a director's movies. Each movie will need
   # to have a :director_name key added to it.
+  directors_array = []
+  movies_array = []
+  
+  directors_index = 0
+  while directors_index < source.length do
+    movies_collection = []
+    movies_index = 0
+    while movies_index < source[directors_index][:movies].length do
+      movies_collection << source[directors_index][:movies][movies_index]
+      
+      movies_index += 1
+    end
+    movies_array << movies_with_director_key(source[directors_index][:name], movies_collection)
+
+    directors_index += 1
+  end
+  movies_array
 end
 
 # ----------------    End of Your Code Region --------------------
